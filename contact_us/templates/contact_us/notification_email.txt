@@ -1,0 +1,6 @@
+Nuevo mensaje en la página
+De: {{ obj.from_name }}
+Email: {{ obj.from_email }}{% if obj.from_phone %}
+Teléfono: {{ obj.from_phone }}{% endif %}
+Mensaje:
+{{ obj.message }}
