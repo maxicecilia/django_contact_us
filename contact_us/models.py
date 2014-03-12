@@ -10,16 +10,12 @@ from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext as _
 
 CONTACT_US_LOG_ACTION_VIEW = getattr(settings, 'CONTACT_US_LOG_ACTION_VIEW', 4)
-
-if hasattr(settings, 'CONTACT_US_FORM'):
-    CONTACT_US_FORM_SETTINGS = settings.CONTACT_US_FORM
-else:
-    CONTACT_US_FORM_SETTINGS = {}
+CONTACT_US_FORM_SETTINGS = getattr(settings, 'CONTACT_US_FORM', {})
 
 
 class SimpleContact(models.Model):
     # Model data #######################
-    ts = models.DateTimeField(_("Time stamp"), auto_now=True, editable=False)
+    ts = models.DateTimeField(_("Timestamp"), auto_now=True, editable=False)
     from_name = models.CharField(_("Nombre"), max_length=64)
     from_email = models.EmailField(_("Email"))
     from_phone = models.CharField(_(u"Teléfono"), max_length=64, blank=True)
