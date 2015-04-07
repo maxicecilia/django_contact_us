@@ -14,18 +14,16 @@ CONTACT_US_FORM_SETTINGS = getattr(settings, 'CONTACT_US_FORM', {})
 
 
 class SimpleContact(models.Model):
-    # Model data #######################
-    ts = models.DateTimeField(_("Timestamp"), auto_now=True, editable=False)
-    from_name = models.CharField(_("Nombre"), max_length=64)
-    from_email = models.EmailField(_("Email"))
-    from_phone = models.CharField(_(u"Teléfono"), max_length=64, blank=True)
-    message = models.TextField(_(u"Mensaje"), blank=True)
+    from_email = models.EmailField(_(u'Email'), blank=True, null=True)
+    from_name = models.CharField(_(u'Nombre'), max_length=64, blank=True, null=True)
+    from_phone = models.CharField(_(u'Teléfono'), max_length=64, blank=True, null=True)
+    message = models.TextField(_(u'Mensaje'))
+    ts = models.DateTimeField(_(u'Timestamp'), auto_now=True, editable=False)
 
     class Meta:
-        ordering = ("-ts", )
-        verbose_name = _(u"Contácto")
-        verbose_name_plural = _(u"Contáctos")
-    # Model instance methods ###########
+        ordering = ('-ts', )
+        verbose_name = _(u'Contácto')
+        verbose_name_plural = _(u'Contáctos')
 
     def set_viewed(self, user):
         LogEntry.objects.log_action(
@@ -37,14 +35,11 @@ class SimpleContact(models.Model):
             change_message=_(u"Leído por {0}".format(force_unicode(user))))
 
     def get_viewed(self, user):
-        return (LogEntry
-                .objects
-                .filter(object_id=self.pk,
-                        content_type__id__exact=ContentType.objects.get_for_model(self).pk,
-                        action_flag=CONTACT_US_LOG_ACTION_VIEW,
-                        )
-                .exists()
-                )
+        return (LogEntry.objects.filter(
+            object_id=self.pk,
+            content_type__id__exact=ContentType.objects.get_for_model(self).pk,
+            action_flag=CONTACT_US_LOG_ACTION_VIEW, )
+            .exists())
 
     def notify_users(self, email_template=None, recipients=None):
         """
@@ -74,9 +69,8 @@ class SimpleContact(models.Model):
                   fail_silently=True,
                   )
 
-    # Method overrides #################
     def __unicode__(self):
-        return "{0} ({1})".format(self.ts, self.from_email)
+        return '{0} ({1})'.format(self.ts, self.from_email)
 
     @models.permalink
     def get_absolute_url(self):
