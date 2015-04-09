@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
@@ -6,7 +7,7 @@ from django.utils.translation import ugettext as _
 from forms import SimpleContactForm
 
 
-def contact_us(request, extra_context=None, template=None):
+def contact_us(request, extra_context=None, template=None, redirect_on_success=None):
     title = _(u"Contáctese con nosotros")
     if request.method == 'POST':
         form = SimpleContactForm(request.POST)
@@ -15,6 +16,8 @@ def contact_us(request, extra_context=None, template=None):
             form.instance.notify_users()
             form = None
             title = _(u"Muchas gracias")
+        if redirect_on_success:
+            return redirect(redirect_on_success)
     else:
         form = SimpleContactForm()
 
