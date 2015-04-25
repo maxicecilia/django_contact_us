@@ -1,5 +1,8 @@
 
 # Contact Us Project #
+[![Build Status](https://travis-ci.org/maxicecilia/django_contact_us.svg)](https://travis-ci.org/maxicecilia/django_contact_us)
+[![Coverage Status](https://coveralls.io/repos/maxicecilia/django_contact_us/badge.svg?branch=big_refactor)](https://coveralls.io/r/maxicecilia/django_contact_us?branch=big_refactor)
+
 
 ## About ##
 
@@ -23,14 +26,16 @@ Add 'contact_us' to your INSTALLED_APPS setting
 
 Add the view to your urls.py
 
-    from contact_us.views import contact_us
+    from contact_us.views import ContactUsFormView
     ...
     urlpatterns = patterns(
     ...
-        url(r'^contact_us/', contact_us, name='contact_us'),
+        url(r'^contact_us/', ContactUsFormView.as_view(), name='contact_us'),
     ...
 
-You can set the template using **{'template': 'my_template.html'}** or redefine **contact_us/contact_form.html**
+You can set the template using **ContactUsFormView.as_view(template='my_template.html')** or redefine **contact_us/contact_form.html**
+
+By default the form will redirect to /thanks/ unless you override the success_url or send a next attribute in the GET.
 
 Optionally you can add the model to the admin, so you can see the messages:
 
