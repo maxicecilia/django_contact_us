@@ -1,5 +1,6 @@
 # coding: utf-8
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -18,6 +19,7 @@ class SimpleContact(models.Model):
     from_name = models.CharField(_(u'Nombre'), max_length=64, blank=True, null=True)
     from_phone = models.CharField(_(u'Teléfono'), max_length=64, blank=True, null=True)
     message = models.TextField(_(u'Mensaje'))
+    site = models.ForeignKey(Site)
     ts = models.DateTimeField(_(u'Timestamp'), auto_now=True, editable=False)
 
     class Meta:

@@ -1,30 +1,31 @@
 # coding: utf-8
-from django.shortcuts import redirect
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.utils.translation import ugettext as _
-
-from forms import SimpleContactForm
+from django.views.generic.edit import FormView
+from forms import ContactForm
 
 
-def contact_us(request, extra_context=None, template=None, redirect_on_success=None):
-    title = _(u"Contáctese con nosotros")
-    if request.method == 'POST':
-        form = SimpleContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            form.instance.notify_users()
-            form = None
-            title = _(u"Muchas gracias")
-        if redirect_on_success:
-            return redirect(redirect_on_success)
-    else:
-        form = SimpleContactForm()
+class ContactUsFormView(FormView):
+    form_class = ContactForm
+    success_url = '/thanks/'
+    template_name = 'contact_us/contact_form.html'
 
-    context = {
-        'title': title,
-        'form': form,
-    }
-    context.update(extra_context or {})
-    context_instance = RequestContext(request, current_app="contact_us")
-    return render_to_response(template or 'contact_us/contact_form.html', context, context_instance=context_instance)
+    def get(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        context = self.get_context_data(**kwargs)
+        context['form'] = form
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.site = get_current_site(self.request)
+        obj.save()
+        form.instance.notify_users()
+        return super(ContactUsFormView, self).form_valid(form)
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next', None)
+        if next_url:
+            return "{}".format(next_url)
+        return super(ContactUsFormView, self).get_success_url()

@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.contrib.admin import ModelAdmin
-from django.contrib.admin.util import unquote
+from django.contrib.admin.utils import unquote
 
 
 class ContactUsAdmin(ModelAdmin):
