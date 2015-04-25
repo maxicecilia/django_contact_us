@@ -5,7 +5,7 @@ import os
 setup(name='django-contact-us',
       version='1.0',
       description='Generic contact-us application for Django',
-      long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
+      long_description='Generic contact-us application for Django',
       author='Maximiliano Cecilia',
       author_email='maxicecilia@gmail.com',
       url='https://github.com/maxicecilia/django_contact_us/',
