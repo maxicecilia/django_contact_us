@@ -1,6 +1,7 @@
 
 # Contact Us Project #
 [![Build Status](https://travis-ci.org/maxicecilia/django_contact_us.svg)](https://travis-ci.org/maxicecilia/django_contact_us)
+[![Coverage Status](https://coveralls.io/repos/maxicecilia/django_contact_us/badge.svg?branch=big_refactor)](https://coveralls.io/r/maxicecilia/django_contact_us?branch=big_refactor)
 
 
 ## About ##
