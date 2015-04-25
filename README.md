@@ -1,5 +1,7 @@
 
 # Contact Us Project #
+[![Build Status](https://travis-ci.org/maxicecilia/django_contact_us.svg)](https://travis-ci.org/maxicecilia/django_contact_us)
+
 
 ## About ##
 
