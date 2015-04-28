@@ -2,7 +2,8 @@
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render_to_response
 from django.views.generic.edit import FormView
-from forms import ContactForm
+from forms import ContactForm, SimpleContactForm
+from settings import FORM_STYLE
 
 
 class ContactUsFormView(FormView):
@@ -17,6 +18,14 @@ class ContactUsFormView(FormView):
         context['form'] = form
         return self.render_to_response(context)
 
+    def get_form_class(self):
+        """
+        Returns the form class to use in this view
+        """
+        if FORM_STYLE == 'simple':
+            self.form_class = SimpleContactForm
+        return super(ContactUsFormView, self).get_form_class()
+
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.site = get_current_site(self.request)
@@ -25,7 +34,11 @@ class ContactUsFormView(FormView):
         return super(ContactUsFormView, self).form_valid(form)
 
     def get_success_url(self):
-        next_url = self.request.GET.get('next', None)
+        '''
+        Check for next parameter in GET and POST.
+        '''
+        next_url = self.request.GET.get(
+            'next', self.request.POST.get('next', None))
         if next_url:
             return "{}".format(next_url)
         return super(ContactUsFormView, self).get_success_url()

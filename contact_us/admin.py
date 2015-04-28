@@ -4,9 +4,10 @@ from django.contrib.admin.utils import unquote
 
 
 class ContactUsAdmin(ModelAdmin):
-    list_display = ('ts', 'from_name', 'from_email', )
-    readonly_fields = ('ts', 'from_name', 'from_email', 'from_phone', 'message')
-    fields = ('ts', 'from_name', 'from_email', 'from_phone', 'message')
+    list_display = ('ts', 'site', 'from_name', 'from_email', )
+    readonly_fields = ('ts', 'site', 'from_name', 'from_email', 'from_phone', 'message')
+    fields = ('ts', 'site', 'from_name', 'from_email', 'from_phone', 'message')
+    list_filter = ('site', )
 
     def change_view(self, request, object_id, extra_context=None):
         obj = self.get_object(request, unquote(object_id))
