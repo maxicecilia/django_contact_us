@@ -1,0 +1,4 @@
+{% spaceless %}
+{% load i18n %}
+{% trans "Nuevo mensaje en la página" %} {{ obj.site.name }}
+{% endspaceless %}
